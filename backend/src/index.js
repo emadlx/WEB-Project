@@ -40,3 +40,26 @@ server.listen(PORT, () => {
   console.log("server is running on PORT:" + PORT);
   connectDB();
 });
+
+// … all your app.use() and app.get("/*", …) calls
+
+// DEBUG: dump every mounted route
+console.log(">>> Mounted paths:");
+app._router.stack.forEach((layer) => {
+  if (layer.route) {
+    console.log(" ", Object.keys(layer.route.methods), layer.route.path);
+  } else if (layer.name === "router") {
+    layer.handle.stack.forEach((handler) => {
+      console.log(
+        " ",
+        handler.route ? Object.keys(handler.route.methods) : "",
+        handler.route?.path
+      );
+    });
+  }
+});
+
+server.listen(PORT, () => {
+  console.log("server is running on PORT:" + PORT);
+  connectDB();
+});
